@@ -4,9 +4,9 @@ import string
 import nltk
 from nltk.corpus import stopwords
 import numpy as np
-
+nltk.download('omw-1.4')
 nltk.download('stopwords')
-symbols = list(string.punctuation + "®")
+symbols = list(string.punctuation + "®" + "\t" + "\n" + "\r")
 stops = stopwords.words('english')
 full_stops = stops + symbols
 
@@ -37,11 +37,15 @@ def flatten_irregular_list(li):
     return returnArray
 
 
-def pre_process_text(doc):
+def pre_process_text(doc, lemmatizer = False):
     doc = doc.lower()
     tokens = strip_symbols(doc)
     output = ""
     for token in tokens:
         if token not in full_stops and token.isalpha():
                 output += token.lower() + " "
-    return lemmatize_doc(output[:-1])
+    if lemmatizer == True:
+        return lemmatize_doc(output[:-1])
+    else: 
+        return output[:-1]
+    
